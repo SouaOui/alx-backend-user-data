@@ -34,14 +34,9 @@ class DB:
         """
         add a user to the database
         """
-        try:
-            user = User(email=email, hashed_password=hashed_password)
-            session = self._session
-            session.add(user)
-            session.commit()
-        except Exception:
-            session.rollback()
-            user = None
+        user = User(email=email, hashed_password=hashed_password)
+        self._session.add(user)
+        self._session.commit()
         return user
 
     def find_user_by(self, **kwargs):
