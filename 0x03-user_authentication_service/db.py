@@ -31,7 +31,7 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """add user method
+        """add a user to the database
         """
         try:
             user = User(email=email, hashed_password=hashed_password)
@@ -41,19 +41,3 @@ class DB:
             self._session.rollback()
             user = None
         return user
-
-    def find_user_by(self, **kwargs):
-        """find user by
-        """
-        if not kwargs:
-            raise InvalidRequestError("invalid")
-        session = self._session
-        query = session.query(User)
-        for column, value in kwargs.items():
-            column_att = getattr(User, column)
-            query = query.filter(column_att == value)
-        try:
-            return query.first()
-        except BaseException:
-            raise NoResultFound("Not Found")
-        pass
